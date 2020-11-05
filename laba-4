@@ -1,0 +1,60 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <locale.h>
+
+void vvod(int* t)
+{
+    while (!(scanf_s("%d", t))) {
+        printf("Data entered incorrectly, please try again...\n");
+        rewind(stdin);
+    }
+}
+
+void vvod_array(int* t, int w)
+{
+    while (!(scanf_s("%d", t))) {
+        printf("Data entered incorrectly, please try again. Enter elements starting with a[%d]\n", w + 1);
+        rewind(stdin);                                                                                      // перемещаем указатель
+    }
+}
+
+int main()
+{
+    int n, a[100], buf, f_el, left = 0, right = 0;
+
+    printf_s("Enter the dimension of the array N = ");
+    vvod(&n);
+    printf_s("Enter array elements A[%d]: ", n);
+    vvod(&a[0]);
+
+    for (int i = 1; i < n; i++)
+    {
+        vvod_array(&a[i], i);
+        if (a[i] > a[0]) right++; else left++;
+    }
+
+    f_el = a[0];
+    int i = n - 1;
+
+    while (i > 0)
+        if (a[i] > f_el && right != 0)
+        {
+            buf = a[i];
+            for (int j = i; j > 0; j--)
+                a[j] = a[j - 1];
+            a[0] = buf;
+            right--;
+        }
+        else i--;
+    int y = 0;
+    printf_s("Ready array: \n");
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i] == f_el && !y) {
+            printf_s("| %d | ", a[i]); y = 1;
+        }
+        else
+            printf_s("%d ", a[i]);
+    }
+    return 0;
+}
